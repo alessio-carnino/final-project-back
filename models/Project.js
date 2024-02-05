@@ -26,9 +26,8 @@ const projectSchema = new Schema({
   },
   author: {
     type: SchemaTypes.ObjectId,
-    required: true,
+    // required: true,
     ref: "Author",
-    default: "https://source.unsplash.com/random/100×100/?headshot",
   },
 });
 

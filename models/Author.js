@@ -17,6 +17,9 @@ const authorSchema = new Schema({
   },
   user_name: {
     type: String,
+    required: true,
+    minLength: 1,
+    maxLength: 50,
     trim: true,
   },
   profession_title: {
@@ -25,7 +28,6 @@ const authorSchema = new Schema({
   cover_img: {
     type: String,
     required: true,
-    default: "https://source.unsplash.com/random/100×100/?headshot",
   },
 });
 
