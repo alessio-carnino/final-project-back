@@ -7,10 +7,10 @@ router.use(express.json());
 
 router.post("/", async (req, res) => {
   try {
-    const newProject = new Project(req.body);
-    await newProject.save();
-    const projects = await Project.find();
-    res.send(projects);
+    const newUser = new User(req.body);
+    await newUser.save();
+    const users = await User.find();
+    res.send(users);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -18,8 +18,8 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const projects = await Project.find().populate("user", "user_name -_id");
-    res.send(projects);
+    const users = await User.find();
+    res.send(users);
   } catch (err) {
     res.status(500).send("Server error");
   }
@@ -27,14 +27,11 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const project = await Project.findOne({ _id: req.params.id }).populate(
-      "user",
-      "user_name -_id"
-    );
-    if (project === null) {
-      throw new Error("Not found");
+    const user = await User.findOne({ _id: req.params.id });
+    if (user === null) {
+      throw new Error("User not found");
     }
-    res.send(project);
+    res.send(user);
   } catch (err) {
     res.status(404).send("Server error");
   }
@@ -42,9 +39,9 @@ router.get("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    await Project.findOneAndDelete({ _id: req.params.id });
-    res.send("Project deleted successfully");
-  } catch (e) {
+    await User.findByIdAndDelete({ _id: req.params.id });
+    res.send("User seccessfully deleted");
+  } catch (err) {
     res.status(404).send(err.message);
   }
 });
@@ -54,14 +51,14 @@ router.patch("/:id", async (req, res) => {
     res.status(400).send("You must enter a body with at least one property");
   }
   try {
-    const project = await Project.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.params.id });
     Object.entries(req.body).forEach(([key, value]) => {
       if (key !== "_id") {
-        project[key] = value;
+        user[key] = value;
       }
     });
-    await project.save();
-    res.send("Project updated successfully");
+    await user.save();
+    res.send("User updated successfully");
   } catch (err) {
     res.status(400).send(err.message);
   }

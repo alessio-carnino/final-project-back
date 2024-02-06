@@ -5,8 +5,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
 import projectsRoutes from "./routes/projectsRoutes.js";
-import authorsRoutes from "./routes/authorsRoutes.js";
+import usersRoutes from "./routes/usersRoutes.js";
 const { MONGO_URI } = process.env;
+const PORT = process.env.PORT || 3000;
 
 //creo il mio server
 const app = express();
@@ -18,14 +19,14 @@ app.use(express.json());
 
 //rotte
 app.use("/projects", projectsRoutes);
-app.use("/authors", authorsRoutes);
+app.use("/users", usersRoutes);
 
 //connect MongoDB
 mongoose
   .connect(MONGO_URI)
   .then(() => {
     console.log("MongoDB connected succesfully");
-    app.listen(3000, () => {
+    app.listen(PORT, () => {
       console.log("Server running - listening on port 3000");
     });
   })

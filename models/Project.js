@@ -24,10 +24,10 @@ const projectSchema = new Schema({
     type: String,
     default: "https://source.unsplash.com/random/100×100/?design",
   },
-  author: {
+  user: {
     type: SchemaTypes.ObjectId,
     // required: true,
-    ref: "Author",
+    ref: "User",
   },
 });
 

@@ -1,6 +1,6 @@
 import { Schema, SchemaTypes, model } from "mongoose";
 
-const authorSchema = new Schema({
+const userSchema = new Schema({
   first_name: {
     type: String,
     required: true,
@@ -31,6 +31,6 @@ const authorSchema = new Schema({
   },
 });
 
-const Author = model("Author", authorSchema);
+const User = model("User", userSchema);
 
-export default Author;
+export default User;
