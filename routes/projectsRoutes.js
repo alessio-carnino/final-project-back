@@ -7,10 +7,12 @@ router.use(express.json());
 
 router.post("/", async (req, res) => {
   try {
-    const newProject = new Project(req.body);
-    await newProject.save();
-    const projects = await Project.find();
-    res.send(projects);
+    // TO DO -- ho usato l'id di Kalins ma devo trovare modo di estrapolare l'id dal token usando jwt.verify come in helper.js
+    const user = await User.findOne({ _id: "65c21acf185c0807d48673c4" });
+    const newProject = new Project({ ...req.body, user });
+    const result = await newProject.save();
+    // const projects = await Project.find();
+    res.send(result);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -18,7 +20,12 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const projects = await Project.find().populate("user", "user_name -_id");
+    let projects = await Project.find().populate("user", "user_name -_id");
+    projects = projects.map((p) => ({
+      _id: p._id,
+      title: p.title,
+      cover_img: p.cover_img,
+    }));
     res.send(projects);
   } catch (err) {
     res.status(500).send("Server error");

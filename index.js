@@ -6,6 +6,9 @@ dotenv.config();
 import mongoose from "mongoose";
 import projectsRoutes from "./routes/projectsRoutes.js";
 import usersRoutes from "./routes/usersRoutes.js";
+import authorizationsRoutes from "./routes/authorizationsRoutes.js";
+import { requireAuthorization } from "./library/authorizationHelper.js";
+
 const { MONGO_URI } = process.env;
 const PORT = process.env.PORT || 3000;
 
@@ -18,6 +21,8 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 //rotte
+app.use("/auth", authorizationsRoutes);
+app.use(requireAuthorization());
 app.use("/projects", projectsRoutes);
 app.use("/users", usersRoutes);
 
@@ -27,7 +32,7 @@ mongoose
   .then(() => {
     console.log("MongoDB connected succesfully");
     app.listen(PORT, () => {
-      console.log("Server running - listening on port 3000");
+      console.log(`Server running - listening on port ${PORT} `);
     });
   })
   .catch((err) => console.error(err));

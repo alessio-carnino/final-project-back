@@ -1,5 +1,4 @@
 import express from "express";
-import Project from "../models/Project.js";
 import User from "../models/User.js";
 
 const router = express.Router();
@@ -17,8 +16,15 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  console.log("ciao");
   try {
-    const users = await User.find();
+    let users = await User.find();
+    users = users.map((u) => ({
+      _id: u._id,
+      user_name: u.user_name,
+      profession_title: u.profession_title,
+      cover_img: u.cover_img,
+    }));
     res.send(users);
   } catch (err) {
     res.status(500).send("Server error");
@@ -27,10 +33,11 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    let user = await User.findOne({ _id: req.params.id });
     if (user === null) {
       throw new Error("User not found");
     }
+    delete user.password; //REMOVES THE PASSWORD FROM THE USER OBJECT
     res.send(user);
   } catch (err) {
     res.status(404).send("Server error");
