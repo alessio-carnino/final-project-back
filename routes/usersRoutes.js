@@ -16,7 +16,6 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  console.log("ciao");
   try {
     let users = await User.find();
     users = users.map((u) => ({

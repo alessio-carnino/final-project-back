@@ -1,13 +1,15 @@
 import express from "express";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
+const { SECRET_KEY } = process.env;
 
 const router = express.Router();
 router.use(express.json());
 
 router.post("/", async (req, res) => {
   try {
-    // TO DO -- ho usato l'id di Kalins ma devo trovare modo di estrapolare l'id dal token usando jwt.verify come in helper.js
+    // TO DO -- ho usato l'id di Kalins ( "65c21acf185c0807d48673c4") ma devo trovare modo di estrapolare l'id dal token usando jwt.verify come in helper.js
     const user = await User.findOne({ _id: "65c21acf185c0807d48673c4" });
     const newProject = new Project({ ...req.body, user });
     const result = await newProject.save();
