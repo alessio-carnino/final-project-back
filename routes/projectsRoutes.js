@@ -10,7 +10,7 @@ router.use(express.json());
 router.post("/", async (req, res) => {
   try {
     // TO DO -- ho usato l'id di Kalins ( "65c21acf185c0807d48673c4") ma devo trovare modo di estrapolare l'id dal token usando jwt.verify come in helper.js
-    const user = await User.findOne({ _id: "65c21acf185c0807d48673c4" });
+    const user = await User.findOne({ _id: req.userId });
     const newProject = new Project({ ...req.body, user });
     const result = await newProject.save();
     // const projects = await Project.find();
@@ -51,8 +51,14 @@ router.get("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    await Project.findOneAndDelete({ _id: req.params.id });
-    res.send("Project deleted successfully");
+    const project = await Project.findOne({ _id: req.params.id });
+
+    if (String(project.user._id) === req.userId) {
+      await Project.deleteOne({ _id: req.params.id });
+      res.send("Project deleted successfully");
+    } else {
+      res.status(500).send("You are not authourized to delete this project");
+    }
   } catch (e) {
     res.status(404).send(err.message);
   }
@@ -64,13 +70,18 @@ router.patch("/:id", async (req, res) => {
   }
   try {
     const project = await Project.findOne({ _id: req.params.id });
-    Object.entries(req.body).forEach(([key, value]) => {
-      if (key !== "_id") {
-        project[key] = value;
-      }
-    });
-    await project.save();
-    res.send("Project updated successfully");
+
+    if (String(project.user._id) === req.userId) {
+      Object.entries(req.body).forEach(([key, value]) => {
+        if (key !== "_id") {
+          project[key] = value;
+        }
+      });
+      await project.save();
+      res.send("Project updated successfully");
+    } else {
+      res.status(500).send("You are not authourized to delete this project");
+    }
   } catch (err) {
     res.status(400).send(err.message);
   }

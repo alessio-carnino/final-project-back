@@ -34,7 +34,13 @@ export const requireAuthorization = () => {
         throw new Error("Token required");
       }
 
-      jwt.verify(token, SECRET_KEY);
+      jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) {
+          console.error(err);
+          return res.sendStatus(403);
+        }
+        req.userId = String(user._id);
+      });
     } catch (err) {
       console.error(err);
       return res.status(401).send(`Request is not authorized: ${err.message}`);
