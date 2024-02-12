@@ -9,7 +9,6 @@ router.use(express.json());
 
 router.post("/", async (req, res) => {
   try {
-    // TO DO -- ho usato l'id di Kalins ( "65c21acf185c0807d48673c4") ma devo trovare modo di estrapolare l'id dal token usando jwt.verify come in helper.js
     const user = await User.findOne({ _id: req.userId });
     const newProject = new Project({ ...req.body, user });
     const result = await newProject.save();
@@ -23,6 +22,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     let projects = await Project.find().populate("user", "user_name -_id");
+
     projects = projects.map((p) => ({
       _id: p._id,
       title: p.title,
@@ -38,14 +38,36 @@ router.get("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id }).populate(
       "user",
-      "user_name -_id"
+      "user_name cover_img profession_title description description_preview _id"
     );
+
     if (project === null) {
       throw new Error("Not found");
     }
     res.send(project);
   } catch (err) {
     res.status(404).send("Server error");
+  }
+});
+
+router.get("/:id/related", async (req, res) => {
+  try {
+    const project = await Project.findOne({ _id: req.params.id }).populate(
+      "user"
+    );
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    const relatedProjects = await Project.find({
+      "user._id": project.user._id,
+      _id: { $ne: project._id },
+    }).select("_id title cover_img");
+
+    res.send(relatedProjects);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 });
 

@@ -40,11 +40,18 @@ const userSchema = new Schema(
     profession_title: {
       type: String,
     },
+    description: {
+      type: String,
+    },
+    description_preview: {
+      type: String,
+    },
     cover_img: {
       type: String,
       // required: true,
     },
   },
+
   { timestamps: true }
 );
 

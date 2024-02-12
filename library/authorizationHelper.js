@@ -20,7 +20,7 @@ export const comparePwd = async (password, hashedPwd) => {
 
 //payload... crea un token a signup e login
 export const generateToken = (_id) => {
-  const token = jwt.sign({ _id }, SECRET_KEY, { expiresIn: "3d" });
+  const token = jwt.sign({ _id }, SECRET_KEY, { expiresIn: "365d" });
   return token;
 };
 
@@ -48,3 +48,5 @@ export const requireAuthorization = () => {
     next();
   };
 };
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWM2MDFmOTk3N2ExZmM4M2IxZDAwMWUiLCJpYXQiOjE3MDc0NzU3MTIsImV4cCI6MTcwNzczNDkxMn0.VX2KiyXppU3dXXGFyTFg3v7WsEtISV5JT7EI2g1JmrY
