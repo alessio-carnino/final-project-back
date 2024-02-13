@@ -32,7 +32,8 @@ router.post("/signup", async (req, res) => {
     );
     const token = generateToken({ userId: user._id, user_name });
     return res.status(201).send({
-      token,
+      token: token,
+      userId: user._id,
     });
   } catch (error) {
     console.error(error);
@@ -51,7 +52,8 @@ router.post("/login", async (req, res) => {
     const user = await User.logIn(email, password);
     const token = generateToken(user._id);
     return res.status(202).send({
-      token,
+      token: token,
+      userId: user._id,
     });
   } catch (error) {
     console.error(error);
