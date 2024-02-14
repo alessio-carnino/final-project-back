@@ -16,15 +16,29 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 1;
+
   try {
-    let users = await User.find();
-    users = users.map((u) => ({
+    const totalUsers = await User.countDocuments();
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    const users = await User.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const response = users.map((u) => ({
       _id: u._id,
       user_name: u.user_name,
       profession_title: u.profession_title,
       cover_img: u.cover_img,
     }));
-    res.send(users);
+
+    res.send({
+      users: response,
+      currentPage: page,
+      totalPages: totalPages,
+    });
   } catch (err) {
     res.status(500).send("Server error");
   }

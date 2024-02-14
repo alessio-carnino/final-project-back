@@ -21,17 +21,30 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 3;
   try {
-    let projects = userId
-      ? await Project.find({ user: userId }).populate("user", "user_name -_id")
-      : await Project.find().populate("user", "user_name -_id");
+    let query = userId ? { user: userId } : {};
+    const totalProjects = await Project.countDocuments(query);
+    const totalPages = Math.ceil(totalProjects / limit);
 
-    projects = projects.map((p) => ({
-      _id: p._id,
-      title: p.title,
-      cover_img: p.cover_img,
-    }));
-    res.send(projects);
+    const projects = await Project.find(query)
+      .populate("user", "user_name -_id")
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const response = {
+      projects: projects.map((p) => ({
+        _id: p._id,
+        title: p.title,
+        cover_img: p.cover_img,
+        user: p.user.user_name,
+      })),
+      currentPage: page,
+      totalPages: totalPages,
+    };
+
+    res.send(response);
   } catch (err) {
     res.status(500).send("Server error");
   }
