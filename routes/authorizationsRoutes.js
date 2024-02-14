@@ -15,7 +15,6 @@ router.post("/signup", async (req, res) => {
     profession_title,
     cover_img,
   } = req.body;
-  console.log(req.body);
   if (!email || !password) {
     return res.status(400).send("All fields must be filled");
   }

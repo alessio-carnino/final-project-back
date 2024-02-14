@@ -20,8 +20,11 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  const userId = req.query.userId;
   try {
-    let projects = await Project.find().populate("user", "user_name -_id");
+    let projects = userId
+      ? await Project.find({ user: userId }).populate("user", "user_name -_id")
+      : await Project.find().populate("user", "user_name -_id");
 
     projects = projects.map((p) => ({
       _id: p._id,
