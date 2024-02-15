@@ -21,19 +21,20 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
-  const category = req.query.category;
+  const category = req.query.categories;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   try {
     let query = userId ? { user: userId } : {};
     if (category) {
-      query.category = category;
+      query.categories = category;
     }
     const totalProjects = await Project.countDocuments(query);
     const totalPages = Math.ceil(totalProjects / limit);
 
     const projects = await Project.find(query)
       .populate("user", "user_name -_id")
+      .populate("categories")
       .skip((page - 1) * limit)
       .limit(limit);
 
@@ -43,6 +44,7 @@ router.get("/", async (req, res) => {
         title: p.title,
         cover_img: p.cover_img,
         user: p.user.user_name,
+        categories: p.category_name,
       })),
       currentPage: page,
       totalPages: totalPages,
