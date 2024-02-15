@@ -32,6 +32,12 @@ const projectSchema = new Schema({
     required: true,
     ref: "User",
   },
+  categories: [
+    {
+      type: SchemaTypes.ObjectId,
+      ref: "Category",
+    },
+  ],
 });
 
 const Project = model("Project", projectSchema);

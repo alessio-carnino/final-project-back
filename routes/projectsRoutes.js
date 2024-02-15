@@ -21,10 +21,14 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
+  const category = req.query.category;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 3;
+  const limit = parseInt(req.query.limit) || 5;
   try {
     let query = userId ? { user: userId } : {};
+    if (category) {
+      query.category = category;
+    }
     const totalProjects = await Project.countDocuments(query);
     const totalPages = Math.ceil(totalProjects / limit);
 
@@ -52,10 +56,12 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const project = await Project.findOne({ _id: req.params.id }).populate(
-      "user",
-      "user_name cover_img profession_title description description_preview _id"
-    );
+    const project = await Project.findOne({ _id: req.params.id })
+      .populate(
+        "user",
+        "user_name cover_img profession_title description description_preview _id"
+      )
+      .populate("categories");
 
     if (project === null) {
       throw new Error("Not found");

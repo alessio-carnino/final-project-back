@@ -6,6 +6,7 @@ dotenv.config();
 import mongoose from "mongoose";
 import projectsRoutes from "./routes/projectsRoutes.js";
 import usersRoutes from "./routes/usersRoutes.js";
+import categoriesRoutes from "./routes/categoriesRoutes.js";
 import authorizationsRoutes from "./routes/authorizationsRoutes.js";
 import { requireAuthorization } from "./library/authorizationHelper.js";
 
@@ -25,6 +26,7 @@ app.use("/auth", authorizationsRoutes);
 app.use(requireAuthorization());
 app.use("/projects", projectsRoutes);
 app.use("/users", usersRoutes);
+app.use("/categories", categoriesRoutes);
 
 //connect MongoDB
 mongoose
