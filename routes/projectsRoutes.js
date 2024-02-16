@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
   const userId = req.query.userId;
   const category = req.query.categories;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  const limit = parseInt(req.query.limit) || 3;
   try {
     let query = userId ? { user: userId } : {};
     if (category) {

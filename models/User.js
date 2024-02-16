@@ -70,7 +70,9 @@ userSchema.statics.signUp = async function (
   last_name,
   user_name,
   profession_title,
-  cover_img
+  cover_img,
+  description,
+  description_preview
 ) {
   if (!isEmail(email)) {
     throw new Error(`${email} is not a valid email`);
@@ -97,6 +99,8 @@ userSchema.statics.signUp = async function (
     user_name,
     profession_title,
     cover_img,
+    description,
+    description_preview,
   });
   return user;
 };
