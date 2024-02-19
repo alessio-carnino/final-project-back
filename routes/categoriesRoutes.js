@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
   try {
     const categories = await Category.find();
     res.send(categories);
-    console.log(categories);
   } catch (e) {
     res.status(500).send(e);
   }

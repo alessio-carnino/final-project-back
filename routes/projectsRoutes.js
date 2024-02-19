@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.post("/", async (req, res) => {
+  console.log(req.body);
   try {
     const user = await User.findOne({ _id: req.userId });
     const newProject = new Project({ ...req.body, user });
@@ -23,7 +24,7 @@ router.get("/", async (req, res) => {
   const userId = req.query.userId;
   const category = req.query.categories;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 3;
+  const limit = parseInt(req.query.limit) || 5;
   try {
     let query = userId ? { user: userId } : {};
     if (category) {
