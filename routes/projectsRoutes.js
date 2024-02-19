@@ -36,6 +36,7 @@ router.get("/", async (req, res) => {
     const projects = await Project.find(query)
       .populate("user", "user_name -_id")
       .populate("categories")
+      .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);
 
@@ -46,6 +47,7 @@ router.get("/", async (req, res) => {
         cover_img: p.cover_img,
         user: p.user.user_name,
         categories: p.category_name,
+        createdAt: p.createdAt,
       })),
       currentPage: page,
       totalPages: totalPages,

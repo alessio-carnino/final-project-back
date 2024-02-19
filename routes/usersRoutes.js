@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
     const totalPages = Math.ceil(totalUsers / limit);
 
     const users = await User.find()
+      .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);
 
@@ -32,6 +33,7 @@ router.get("/", async (req, res) => {
       user_name: u.user_name,
       profession_title: u.profession_title,
       cover_img: u.cover_img,
+      createdAt: u.createdAt,
     }));
 
     res.send({
