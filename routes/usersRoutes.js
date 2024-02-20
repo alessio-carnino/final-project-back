@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 6;
+  const limit = parseInt(req.query.limit) || 8;
 
   try {
     const totalUsers = await User.countDocuments();
