@@ -102,6 +102,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id });
 
+    // Checkin if user is the creator of the project
     if (String(project.user._id) === req.userId) {
       await Project.deleteOne({ _id: req.params.id });
       res.send("Project deleted successfully");
@@ -120,6 +121,7 @@ router.patch("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id });
 
+    // Checkin if user is the creator of the project
     if (String(project.user._id) === req.userId) {
       Object.entries(req.body).forEach(([key, value]) => {
         if (key !== "_id") {

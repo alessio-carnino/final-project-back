@@ -48,7 +48,8 @@ const userSchema = new Schema(
     },
     cover_img: {
       type: String,
-      // required: true,
+      default:
+        "https://diabetestrialsctn.ie/wp-content/uploads/2023/06/Blank-Headshot.jpg",
     },
   },
 
