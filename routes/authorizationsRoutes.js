@@ -5,6 +5,7 @@ import { generateToken } from "../library/authorizationHelper.js";
 const router = express.Router();
 router.use(express.json());
 
+// POST for signUp ---------------
 router.post("/signup", async (req, res) => {
   const {
     email,
@@ -41,6 +42,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// POST for logIn ---------------
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {

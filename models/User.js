@@ -64,6 +64,7 @@ const passwordCriteria = {
   minSymbols: 1,
 };
 
+// STATICS for signUp
 userSchema.statics.signUp = async function (
   email,
   password,
@@ -106,6 +107,7 @@ userSchema.statics.signUp = async function (
   return user;
 };
 
+// STATICS for logIn
 userSchema.statics.logIn = async function (email, password) {
   const user = await this.findOne({ email });
   const passwordMatch = await comparePwd(password, user.password);

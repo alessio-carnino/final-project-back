@@ -6,6 +6,7 @@ const { SECRET_KEY } = process.env;
 const router = express.Router();
 router.use(express.json());
 
+// GET call for categories
 router.get("/", async (req, res) => {
   try {
     const categories = await Category.find();

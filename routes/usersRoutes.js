@@ -4,6 +4,7 @@ import User from "../models/User.js";
 const router = express.Router();
 router.use(express.json());
 
+// POST - New User
 router.post("/", async (req, res) => {
   try {
     const newUser = new User(req.body);
@@ -15,6 +16,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// GET - All Talents
 router.get("/", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 8;
@@ -34,6 +36,8 @@ router.get("/", async (req, res) => {
       profession_title: u.profession_title,
       cover_img: u.cover_img,
       createdAt: u.createdAt,
+      description: u.description,
+      description_preview: u.description_preview,
     }));
 
     res.send({
@@ -46,6 +50,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET - Specific Talent by ID
 router.get("/:id", async (req, res) => {
   try {
     let user = await User.findOne({ _id: req.params.id });
@@ -59,6 +64,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// DELETE - Delete User (only possible if user is current user)
 router.delete("/:id", async (req, res) => {
   try {
     await User.findByIdAndDelete({ _id: req.params.id });
@@ -68,6 +74,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// PATCH - Edit User (only possible if user is current user)
 router.patch("/:id", async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
     res.status(400).send("You must enter a body with at least one property");

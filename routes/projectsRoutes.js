@@ -5,8 +5,9 @@ import jwt from "jsonwebtoken";
 const { SECRET_KEY } = process.env;
 
 const router = express.Router();
-router.use(express.json());
+router.use;
 
+// POST - New Project
 router.post("/", async (req, res) => {
   console.log(req.body);
   try {
@@ -20,11 +21,14 @@ router.post("/", async (req, res) => {
   }
 });
 
+// GET - All Projects
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
   const category = req.query.categories;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 16;
+
+  // UserId check
   try {
     let query = userId ? { user: userId } : {};
     if (category) {
@@ -59,6 +63,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET - Specific Project by ID
 router.get("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id })
@@ -77,6 +82,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// GET - Related Projects by ID of current user
 router.get("/:id/related", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id }).populate(
@@ -98,11 +104,12 @@ router.get("/:id/related", async (req, res) => {
   }
 });
 
+// DELETE - Delete Project by ID (only if project author is same as current user)
 router.delete("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id });
 
-    // Checkin if user is the creator of the project
+    // Checking if user is the creator of the project
     if (String(project.user._id) === req.userId) {
       await Project.deleteOne({ _id: req.params.id });
       res.send("Project deleted successfully");
@@ -114,6 +121,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// PATCH - Edit Project by ID
 router.patch("/:id", async (req, res) => {
   if (!req.body || !Object.keys(req.body).length) {
     res.status(400).send("You must enter a body with at least one property");
@@ -121,7 +129,7 @@ router.patch("/:id", async (req, res) => {
   try {
     const project = await Project.findOne({ _id: req.params.id });
 
-    // Checkin if user is the creator of the project
+    // Checking if user is the creator of the project
     if (String(project.user._id) === req.userId) {
       Object.entries(req.body).forEach(([key, value]) => {
         if (key !== "_id") {

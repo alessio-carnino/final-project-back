@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
 import jwt from "jsonwebtoken";
-// import User from "../models/User.js";
 const { SECRET_KEY, PEPPER_KEY } = process.env;
 
 export const hashPasssword = async (password) => {
@@ -18,7 +17,7 @@ export const comparePwd = async (password, hashedPwd) => {
   return match;
 };
 
-//payload... crea un token a signup e login
+//PAYLOAD: creates a token at signup AND login
 export const generateToken = (_id) => {
   const token = jwt.sign({ _id }, SECRET_KEY, { expiresIn: "365d" });
   return token;
@@ -48,5 +47,3 @@ export const requireAuthorization = () => {
     next();
   };
 };
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWM2MDFmOTk3N2ExZmM4M2IxZDAwMWUiLCJpYXQiOjE3MDc0NzU3MTIsImV4cCI6MTcwNzczNDkxMn0.VX2KiyXppU3dXXGFyTFg3v7WsEtISV5JT7EI2g1JmrY
