@@ -9,12 +9,15 @@ router.use;
 
 // POST - New Project
 router.post("/", async (req, res) => {
-  console.log(req.body);
   try {
     const user = await User.findOne({ _id: req.userId });
+    console.log({ user, userId: req.userId });
     const newProject = new Project({ ...req.body, user });
+    console.log({ newProject });
+
     const result = await newProject.save();
-    // const projects = await Project.find();
+    console.log({ result });
+
     res.send(result);
   } catch (err) {
     res.status(400).send(err);

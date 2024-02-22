@@ -39,6 +39,7 @@ export const requireAuthorization = () => {
           return res.sendStatus(403);
         }
         req.userId = String(user._id);
+        console.log({ user, userId: req.userId });
       });
     } catch (err) {
       console.error(err);

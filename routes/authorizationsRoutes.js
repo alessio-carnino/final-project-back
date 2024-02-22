@@ -15,6 +15,8 @@ router.post("/signup", async (req, res) => {
     user_name,
     profession_title,
     cover_img,
+    description,
+    description_preview,
   } = req.body;
   if (!email || !password) {
     return res.status(400).send("All fields must be filled");
@@ -28,9 +30,11 @@ router.post("/signup", async (req, res) => {
       last_name,
       user_name,
       profession_title,
-      cover_img
+      cover_img,
+      description,
+      description_preview
     );
-    const token = generateToken({ userId: user._id, user_name });
+    const token = generateToken(user._id);
     return res.status(201).send({
       token: token,
       userId: user._id,

@@ -104,6 +104,8 @@ userSchema.statics.signUp = async function (
     description,
     description_preview,
   });
+
+  console.log({ user, description, description_preview });
   return user;
 };
 

@@ -4,17 +4,19 @@ import User from "../models/User.js";
 const router = express.Router();
 router.use(express.json());
 
-// POST - New User
-router.post("/", async (req, res) => {
-  try {
-    const newUser = new User(req.body);
-    await newUser.save();
-    const users = await User.find();
-    res.send(users);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
+// POST - New User (NOT IN USE)
+// router.post("/", async (req, res) => {
+//   try {
+//     console.log("post user new", req.body);
+
+//     const newUser = new User(req.body);
+//     await newUser.save();
+//     const users = await User.find();
+//     res.send(users);
+//   } catch (err) {
+//     res.status(400).send(err);
+//   }
+// });
 
 // GET - All Talents
 router.get("/", async (req, res) => {
@@ -57,7 +59,7 @@ router.get("/:id", async (req, res) => {
     if (user === null) {
       throw new Error("User not found");
     }
-    delete user.password; //REMOVES THE PASSWORD FROM THE USER OBJECT
+    delete user.password; //REMOVES PASSWORD FROM USER OBJECT
     res.send(user);
   } catch (err) {
     res.status(404).send("Server error");
